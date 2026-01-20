@@ -22,7 +22,7 @@ public abstract class Publication extends Product {
         this.title = getInput("Available Title"); // "Available Title" is default if empty
     }
 
-    // Helper used by subclasses during initialize
+
     protected void initPriceCopies() {
         System.out.println("Enter copies:");
         this.copies = getInput(0);

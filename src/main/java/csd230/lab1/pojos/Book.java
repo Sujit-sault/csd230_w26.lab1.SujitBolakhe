@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Book extends Publication {
     private String author = "";
+    private String isbn = "";  // ONLY ADD THIS LINE
 
     public Book() {
         super();
@@ -18,25 +19,24 @@ public class Book extends Publication {
         this.author = author;
     }
 
+
+    public Book(String author, String title, double price, int copies, String isbn) {
+        super(title, price, copies);
+        this.author = author;
+        this.isbn = isbn;
+    }
+
     @Override
     public void initialize() {
-        // 1. Initialize Parent (Title)
         super.initialize();
-
-        // 2. Initialize Self (Author)
         System.out.println("Enter Author:");
         this.author = getInput("Unknown Author");
-
-        // 3. Initialize Parent (Copies/Price)
         super.initPriceCopies();
     }
 
     @Override
     public void edit() {
-        // 1. Edit Parent fields (Title, Price, Copies)
         super.edit();
-
-        // 2. Edit Self fields
         System.out.println("Edit Author [" + this.author + "]:");
         this.author = getInput(this.author);
     }
@@ -55,9 +55,18 @@ public class Book extends Publication {
         this.author = author;
     }
 
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     @Override
     public String toString() {
-        return "Book{author='" + author + "', " + super.toString() + "}";
+        return "Book{author='" + author + "', isbn='" + isbn + "', " + super.toString() + "}";
     }
 
     @Override
@@ -66,11 +75,12 @@ public class Book extends Publication {
         if (!(o instanceof Book)) return false;
         if (!super.equals(o)) return false;
         Book book = (Book) o;
-        return Objects.equals(author, book.author);
+        return Objects.equals(author, book.author) &&
+                Objects.equals(isbn, book.isbn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), author);
+        return Objects.hash(super.hashCode(), author, isbn);
     }
 }

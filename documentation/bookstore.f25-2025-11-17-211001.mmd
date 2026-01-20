@@ -1,26 +1,24 @@
 classDiagram
-    Editable <|--Product
-    Product <|--Ticket
-    Product <|--Publication
+    direction TB
+
+
+    Editable <|-- Product
+    Product <|-- Ticket
+    Product <|-- Publication
     Publication <|-- Book
     Publication <|-- Magazine
     Magazine <|-- DiscMag
-    SaleableItem <|.. Product
-    Serializable <|.. Product
-    Product <-- CashTill
 
-    class Product{
-        -String productId
-    }
 
-    class Serializable{
-        <<interface>>
-    }
-    class Ticket{
-        +description
-        +price
-        +sellItem()
-    }
+    Cart "*" -- "*" Product : contains
+
+
+    Product <|-- MusicalInstrument
+    MusicalInstrument <|-- Guitar
+    MusicalInstrument <|-- Drum
+
+
+
     class Editable{
         <<abstract>>
         -Scanner input
@@ -29,69 +27,129 @@ classDiagram
         +double getInput(double)
         +boolean getInput(boolean)
         +Date getInput(Date)
-        +Enum getInput(Enum)
         +edit()*
         +initialize()*
-
     }
+
+    class Product{
+        <<abstract>>
+        -String productId
+        +sellItem()*
+        +getPrice()*
+    }
+
     class Publication{
-        <<Abstract>>
+        <<abstract>>
         -String title
         -double price
         -int copies
         +getPrice()
-
         +Publication()
-        +Publication(String title, double price, int copies)
+        +Publication(String, double, int)
         +toString()
         +equals()
         +hashCode()
-
     }
+
     class Book{
         -String author
+        -String isbn
         +edit()
         +initialize()
         +sellItem()
-
         +Book()
-        +Book(String author)
-        +Book(String author, String title, double price, int copies)
+        +Book(String, String, double, int)
+        +Book(String, String, double, int, String)
         +toString()
         +equals()
         +hashCode()
-
     }
+
     class Magazine{
         -int orderQty
-        -java.util.Date currentIssue
-
+        -LocalDateTime currentIssue
         +Magazine()
-        +Magazine(int orderQty, Date currentIssue, String title, double price, int copies)
-
+        +Magazine(String, double, int, int, LocalDateTime)
         +edit()
         +initialize()
         +sellItem()
     }
+
     class DiscMag{
         -boolean hasDisc
         +edit()
         +initialize()
         +sellItem()
-
         +DiscMag()
-        +DiscMag(boolean, hasDisc, int orderQty, Date currentIssue, String title, double price, int copies)
-
+        +DiscMag(String, double, int, boolean, int, LocalDateTime)
     }
+
+    class Ticket{
+        -String description
+        -double price
+        -String eventName
+        -LocalDateTime eventDate
+        +sellItem()
+        +Ticket()
+        +Ticket(String, double, String, LocalDateTime)
+    }
+
+
+    class Cart{
+        -Long id
+        -Set~Product~ products
+        +addProduct(Product)
+        +getProducts() Set~Product~
+        +getId() Long
+        +toString()
+        +equals()
+        +hashCode()
+    }
+
+
+    class MusicalInstrument{
+        -String material
+        -String brand
+        +getMaterial() String
+        +getBrand() String
+        +sellItem()
+        +edit()
+        +initialize()
+    }
+
+    class Guitar{
+        -Integer numberOfStrings
+        -String guitarType
+        +getNumberOfStrings() Integer
+        +getGuitarType() String
+        +sellItem()
+        +edit()
+        +initialize()
+    }
+
+    class Drum{
+        -String drumType
+        -Integer diameterInInches
+        +getDrumType() String
+        +getDiameterInInches() Integer
+        +sellItem()
+        +edit()
+        +initialize()
+    }
+
     class CashTill{
         -double runningTotal
         +CashTill()
         +showTotal()
-        +sellItem(SaleableItem item)
+        +sellItem(SaleableItem)
     }
+
     class SaleableItem {
         <<interface>>
         +sellItem()
         +getPrice()
+    }
 
+    class Serializable {
+        <<interface>>
     }
