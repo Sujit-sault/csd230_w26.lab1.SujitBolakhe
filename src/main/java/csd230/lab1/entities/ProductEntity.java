@@ -2,35 +2,39 @@ package csd230.lab1.entities;
 
 import csd230.lab1.pojos.SaleableItem;
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 @Entity
 @Table(name = "products")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "product_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(
+        name = "product_type",
+        discriminatorType = DiscriminatorType.STRING
+)
 public abstract class ProductEntity implements Serializable, SaleableItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
+    /**
+     * Bidirectional Many-to-Many relationship with CartEntity.
+     * CartEntity is the owning side (defines the JoinTable).
+     */
     @ManyToMany(mappedBy = "products")
     private Set<CartEntity> carts = new HashSet<>();
 
-    @ManyToMany(mappedBy = "products")
-    private Set<OrderEntity> orders = new HashSet<>();
 
-    // Getters and setters
-    public String getTitle() {
-        return title;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Set<CartEntity> getCarts() {
@@ -41,43 +45,18 @@ public abstract class ProductEntity implements Serializable, SaleableItem {
         this.carts = carts;
     }
 
-    public Set<OrderEntity> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<OrderEntity> orders) {
-        this.orders = orders;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public abstract void sellItem();
-
-    @Override
-    public abstract double getPrice();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ProductEntity)) return false;
-        ProductEntity that = (ProductEntity) o;
-        return getId() != null && getId().equals(that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
+    /**
+     * Helper method for Thymeleaf.
+     * Allows templates to safely display the concrete product type.
+     */
+    public String getProductType() {
+        return this.getClass().getSimpleName();
     }
 
     @Override
     public String toString() {
-        return "ProductEntity{id=" + id + ", title='" + title + "'}";
+        return "ProductEntity{" +
+                "id=" + id +
+                "} : " + super.toString();
     }
 }
