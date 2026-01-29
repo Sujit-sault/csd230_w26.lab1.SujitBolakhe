@@ -24,25 +24,25 @@
     <tbody>
     <tr th:each="product : ${cart.products}">
         <td>
-            <!-- 1. Handle Books/Magazines (they extend PublicationEntity which has 'title') -->
-            <!-- T(...) is used to reference the specific class type for checking -->
+
             <span th:if="${product instanceof T(csd230.lab1.entities.PublicationEntity)}"
                   th:text="${product.title}"></span>
 
 
-            <!-- 2. Handle Tickets (they have 'description') -->
+
             <span th:if="${product instanceof T(csd230.lab1.entities.TicketEntity)}"
                   th:text="${product.description}"></span>
         </td>
 
 
-        <!-- Use the new helper method we added to ProductEntity -->
+
         <td th:text="${product.productType}"></td>
 
 
         <td th:text="${product.price}"></td>
         <td>
-            <a th:href="@{/cart/remove/{id}(id=${product.id})}">Remove</a>
+            <a th:href="@{/cart/remove/{bookId}(bookId=${product.id})}">Remove</a>
+
         </td>
     </tr>
     </tbody>
@@ -50,6 +50,12 @@
 
 
 <br/>
+
+<form th:action="@{/cart/checkout}" method="post"
+      th:unless="${#lists.isEmpty(cart.products)}">
+    <button type="submit">Checkout</button>
+</form>
+
 <p>
     <a th:href="@{/books}">Continue Shopping</a>
 </p>

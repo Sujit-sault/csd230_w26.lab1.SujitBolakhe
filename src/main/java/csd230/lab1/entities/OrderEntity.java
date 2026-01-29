@@ -3,12 +3,13 @@ package csd230.lab1.entities;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
 public class OrderEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,44 +29,36 @@ public class OrderEntity {
     )
     private Set<ProductEntity> products = new LinkedHashSet<>();
 
-    // Constructors
+
     public OrderEntity() {
         this.orderDate = LocalDateTime.now();
         this.totalAmount = 0.0;
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
+    public void addProduct(ProductEntity product) {
+        if (product != null) {
+            this.products.add(product);
+        }
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void removeProduct(ProductEntity product) {
+        if (product != null) {
+            products.remove(product);
+        }
     }
 
-    public double getTotalAmount() {
-        return totalAmount;
-    }
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public LocalDateTime getOrderDate() {
-        return orderDate;
-    }
+    public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
 
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
-    }
+    public LocalDateTime getOrderDate() { return orderDate; }
+    public void setOrderDate(LocalDateTime orderDate) { this.orderDate = orderDate; }
 
-    public Set<ProductEntity> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<ProductEntity> products) {
-        this.products = products;
-    }
+    public Set<ProductEntity> getProducts() { return products; }
+    public void setProducts(Set<ProductEntity> products) { this.products = products; }
 
     @Override
     public boolean equals(Object o) {
