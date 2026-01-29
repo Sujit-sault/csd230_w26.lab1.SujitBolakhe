@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 
-public interface BookRepository extends JpaRepository<BookEntity, Long> {
+public interface BookEntityRepository extends JpaRepository<BookEntity, Long> {
 
     List<BookEntity> findByIsbn(String isbn);
     BookEntity findById(long id);

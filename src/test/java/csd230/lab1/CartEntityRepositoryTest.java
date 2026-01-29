@@ -2,8 +2,8 @@ package csd230.lab1;
 
 import csd230.lab1.entities.BookEntity;
 import csd230.lab1.entities.CartEntity;
-import csd230.lab1.repositories.BookRepository;
-import csd230.lab1.repositories.CartRepository;
+import csd230.lab1.repositories.BookEntityRepository;
+import csd230.lab1.repositories.CartEntityRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,16 +11,16 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class CartRepositoryTest {
+public class CartEntityRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private CartRepository cartRepository;
+    private CartEntityRepository cartRepository;
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookEntityRepository bookRepository;
 
     @Test
     public void testCreateCart() {

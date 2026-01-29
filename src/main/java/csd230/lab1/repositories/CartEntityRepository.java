@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 
-public interface CartRepository extends JpaRepository<CartEntity, Long> {
+public interface CartEntityRepository extends JpaRepository<CartEntity, Long> {
 
 
     @Query("SELECT DISTINCT c FROM CartEntity c JOIN c.products p WHERE p.id = :productId")

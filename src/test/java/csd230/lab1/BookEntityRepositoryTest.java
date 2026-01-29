@@ -1,16 +1,16 @@
 package csd230.lab1;
 
-import csd230.lab1.repositories.BookRepository;
+import csd230.lab1.repositories.BookEntityRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-public class BookRepositoryTest {
+public class BookEntityRepositoryTest {
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookEntityRepository bookRepository;
 
     @Test
     void repositoryExists() {

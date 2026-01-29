@@ -13,7 +13,7 @@ public class CartEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "cart_products",
             joinColumns = @JoinColumn(name = "cart_id"),
