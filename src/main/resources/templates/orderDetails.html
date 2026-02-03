@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Confirmation</title>
+</head>
+<body>
+<h1>Order Confirmation</h1>
+
+<div th:if="${order == null}">
+    <p>No order found.</p>
+    <a th:href="@{/books}">Back to Books</a>
+</div>
+
+<div th:unless="${order == null}">
+    <p><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
+    <p><strong>Order Date:</strong> <span th:text="${order.orderDate}"></span></p>
+    <p><strong>Total Paid:</strong>
+        <span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}"></span>
+    </p>
+
+    <h3>Items Purchased</h3>
+    <ul>
+        <li th:each="p : ${order.products}">
+            <span th:text="${p.productType}"></span> -
+            <span th:text="${
+                p instanceof T(csd230.lab1.entities.PublicationEntity) ? p.title :
+                (p instanceof T(csd230.lab1.entities.TicketEntity) ? p.description : 'Item')
+            }"></span>
+        </li>
+    </ul>
+
+    <a th:href="@{/books}">Continue Shopping</a>
+    <br/>
+    <a th:href="@{/cart}">View Cart</a>
+</div>
+
+</body>
+</html>
