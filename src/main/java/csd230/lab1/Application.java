@@ -117,17 +117,14 @@ public class Application implements CommandLineRunner {
         }
 
 
-        // ------------------------------------
-        // CREATE USERS (Lecture 2.6)
-        // ------------------------------------
 
 
-        // Admin User (Can Add/Edit/Delete)
+
         UserEntity admin = new UserEntity("admin", passwordEncoder.encode("admin"), "ADMIN");
         userRepository.save(admin);
 
 
-        // Regular User (Can only View/Buy)
+
         UserEntity user = new UserEntity("user", passwordEncoder.encode("user"), "USER");
         userRepository.save(user);
 

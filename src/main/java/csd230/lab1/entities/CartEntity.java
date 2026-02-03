@@ -8,10 +8,15 @@ import java.util.Objects;
 @Entity
 @Table(name = "cart_entity")
 public class CartEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
@@ -26,11 +31,30 @@ public class CartEntity {
         product.getCarts().add(this);
     }
 
+    public Long getId() {
+        return id;
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Set<ProductEntity> getProducts() { return products; }
-    public void setProducts(Set<ProductEntity> products) { this.products = products; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<ProductEntity> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<ProductEntity> products) {
+        this.products = products;
+    }
+
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
 
     @Override
     public boolean equals(Object o) {

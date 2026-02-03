@@ -1,12 +1,15 @@
 package csd230.lab1.repositories;
 
 import csd230.lab1.entities.CartEntity;
+import csd230.lab1.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CartEntityRepository extends JpaRepository<CartEntity, Long> {
+    CartEntity findByUser(UserEntity user);
+
 
 
     @Query("SELECT DISTINCT c FROM CartEntity c JOIN c.products p WHERE p.id = :productId")

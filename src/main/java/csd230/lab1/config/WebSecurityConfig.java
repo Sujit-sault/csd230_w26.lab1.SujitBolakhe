@@ -24,8 +24,13 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+                        // Public pages + static assets
+                        .requestMatchers("/h2-console/**", "/login", "/register", "/css/**", "/js/**").permitAll()
+
+                        // Admin-only endpoints
                         .requestMatchers("/books/add", "/books/edit/**", "/books/delete/**").hasRole("ADMIN")
+
+                        // Everything else requires login (books list, cart, etc.)
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -38,6 +43,12 @@ public class WebSecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 );
+
+
+        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+
+
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
 
         return http.build();
     }
