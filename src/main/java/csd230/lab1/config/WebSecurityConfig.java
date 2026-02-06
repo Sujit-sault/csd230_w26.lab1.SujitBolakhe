@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-
+                        .requestMatchers("/api/**").permitAll()  // ADD THIS LINE - Allow REST API access
                         .requestMatchers("/books/add", "/books/edit/**", "/books/delete/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -43,7 +43,8 @@ public class WebSecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
-                );
+                )
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));  // ADD THIS LINE - Disable CSRF for API
 
         return http.build();
     }
