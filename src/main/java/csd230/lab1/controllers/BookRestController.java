@@ -1,0 +1,80 @@
+package csd230.lab1.controllers;
+
+import csd230.lab1.entities.BookEntity;
+import csd230.lab1.repositories.BookEntityRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Tag(name = "Book REST API", description = "JSON API for managing books")
+@RestController
+@RequestMapping("/api/rest/books")
+@CrossOrigin(origins = "*") // Allow React/Frontend access
+public class BookRestController {
+
+    private final BookEntityRepository bookRepository;
+
+    public BookRestController(BookEntityRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    @Operation(summary = "Get all books as JSON")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of books")
+    @GetMapping
+    public List<BookEntity> all() {
+        return bookRepository.findAll();
+    }
+
+    @Operation(summary = "Get a single book by ID")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved book")
+    @ApiResponse(responseCode = "404", description = "Book not found")
+    @GetMapping("/{id}")
+    public BookEntity getBook(@PathVariable Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+    }
+
+    @Operation(summary = "Create a new book")
+    @ApiResponse(responseCode = "201", description = "Book created successfully")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookEntity newBook(@RequestBody BookEntity newBook) {
+        return bookRepository.save(newBook);
+    }
+
+    @Operation(summary = "Update or Replace a book")
+    @ApiResponse(responseCode = "200", description = "Book updated successfully")
+    @ApiResponse(responseCode = "404", description = "Book not found")
+    @PutMapping("/{id}")
+    public BookEntity replaceBook(@RequestBody BookEntity newBook, @PathVariable Long id) {
+        return bookRepository.findById(id)
+                .map(book -> {
+                    book.setAuthor(newBook.getAuthor());
+                    book.setTitle(newBook.getTitle());
+                    book.setPrice(newBook.getPrice());
+                    book.setCopies(newBook.getCopies());
+                    return bookRepository.save(book);
+                })
+                .orElseGet(() -> {
+                    newBook.setId(id);
+                    return bookRepository.save(newBook);
+                });
+    }
+
+    @Operation(summary = "Delete a book")
+    @ApiResponse(responseCode = "204", description = "Book deleted successfully")
+    @ApiResponse(responseCode = "404", description = "Book not found")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBook(@PathVariable Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new BookNotFoundException(id);
+        }
+        bookRepository.deleteById(id);
+    }
+}

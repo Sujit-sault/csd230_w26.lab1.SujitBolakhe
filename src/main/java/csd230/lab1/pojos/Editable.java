@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
@@ -17,15 +18,14 @@ import java.util.Scanner;
  * @author fcarella
  */
 
-
 public abstract class Editable implements Serializable, SaleableItem {
 //    private Long id;
-
 
     public Scanner input = new Scanner(System.in);
 
     public abstract void edit();
     public abstract void initialize();
+
     // setInput, setOutput are used when unit testing
     // see https://stackoverflow.com/questions/1647907/junit-how-to-simulate-system-in-testing
     public void setSystemInput(ByteArrayInputStream testIn){
@@ -43,7 +43,6 @@ public abstract class Editable implements Serializable, SaleableItem {
 //    public void setId(Long id) {
 //        this.id = id;
 //    }
-
 
     public String getInput(String s) {
         String ss = input.nextLine();
@@ -71,6 +70,7 @@ public abstract class Editable implements Serializable, SaleableItem {
         Scanner in2 = new Scanner(s);
         return in2.nextDouble();
     }
+
     public boolean getInput(boolean b) {
         String s = input.nextLine();
         if (s.trim().isEmpty()) {
@@ -98,6 +98,7 @@ public abstract class Editable implements Serializable, SaleableItem {
         }
         return d;
     }
+
     public LocalDate getInput(LocalDate date) {
         String s = input.nextLine();
         if (s.trim().isEmpty()) {
@@ -117,10 +118,32 @@ public abstract class Editable implements Serializable, SaleableItem {
         return d;
     }
 
+    public LocalDateTime getInput(LocalDateTime dateTime) {
+        String s = input.nextLine();
+        if (s.trim().isEmpty()) {
+            return dateTime;
+        }
+        Scanner in2 = new Scanner(s);
+        String dateTimeString = in2.nextLine();
+
+        try {
+
+            return LocalDateTime.parse(dateTimeString);
+        } catch (DateTimeParseException e1) {
+            try {
+                LocalDate date = LocalDate.parse(dateTimeString, DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+                return date.atStartOfDay();
+            } catch (DateTimeParseException e2) {
+                System.out.println("Note: Could not parse date. Using default.");
+                return dateTime;
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "Editable{" +
 //                "id=" + id +
-               '}';
+                '}';
     }
 }
