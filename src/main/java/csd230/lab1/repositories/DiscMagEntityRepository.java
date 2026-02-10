@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
-public interface DiscMagRepository extends JpaRepository<DiscMagEntity, Long> {
+public interface DiscMagEntityRepository extends JpaRepository<DiscMagEntity, Long> {
 
 
     List<DiscMagEntity> findByTitle(String title);

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 
-public interface MagazineRepository extends JpaRepository<MagazineEntity, Long> {
+public interface MagazineEntityRepository extends JpaRepository<MagazineEntity, Long> {
 
 
     List<MagazineEntity> findByTitle(String title);

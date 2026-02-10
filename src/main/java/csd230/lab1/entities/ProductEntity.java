@@ -2,6 +2,7 @@ package csd230.lab1.entities;
 
 import csd230.lab1.pojos.SaleableItem;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;  // ← ADD THIS IMPORT
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -25,9 +26,8 @@ public abstract class ProductEntity implements Serializable, SaleableItem {
      * CartEntity is the owning side (defines the JoinTable).
      */
     @ManyToMany(mappedBy = "products")
+    @JsonIgnore  // ← ADD THIS ANNOTATION
     private Set<CartEntity> carts = new HashSet<>();
-
-
 
     public Long getId() {
         return id;

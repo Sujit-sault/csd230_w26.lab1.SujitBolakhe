@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface TicketRepository extends JpaRepository<TicketEntity, Long> {
+public interface TicketEntityRepository extends JpaRepository<TicketEntity, Long> {
 
     List<TicketEntity> findByEventName(String eventName);
     List<TicketEntity> findByEventNameContaining(String eventNamePart);
